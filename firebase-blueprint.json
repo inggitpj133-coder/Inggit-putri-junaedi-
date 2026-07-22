@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "Respondent": {
+      "title": "Respondent",
+      "description": "Respondent's dental survey data",
+      "type": "object",
+      "properties": {
+        "nama": { "type": "string", "maxLength": 150 },
+        "tanggalInput": { "type": "string", "format": "date-time" },
+        "jenisKelamin": { "type": "string", "enum": ["Laki-laki", "Perempuan"] },
+        "umur": { "type": "number" },
+        "kelompokUmur": { "type": "string", "enum": ["5-10", "10-18", "18-60", "60+"] },
+        "pendidikan": { "type": "string" },
+        "pekerjaan": { "type": "string" },
+        "deft": { "type": "number" },
+        "dmft": { "type": "number" },
+        "gigiSulung": { "type": "object" },
+        "gigiTetap": { "type": "object" },
+        "teethStatus": { "type": "object" },
+        "mukosa": { "type": "object" },
+        "tindakLanjut": { "type": "object" },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["nama", "tanggalInput", "jenisKelamin", "umur"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with role-based access controls",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["administrator", "surveyor", "analis"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "displayName", "role"]
+    }
+  },
+  "firestore": {
+    "/sessions/{sessionId}/respondents/{respondentId}": {
+      "schema": "Respondent",
+      "description": "Subcollection of dental survey respondents within a session"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Global collection of system user profiles with specific roles"
+    }
+  }
+}

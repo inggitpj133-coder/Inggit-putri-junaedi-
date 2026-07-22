@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default catch-all deny to enforce zero-trust bounds on unlisted collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Sessions & respondents subcollections
+    // This supports collaborative data logging across multiple tablets/phones with session passcodes
+    match /sessions/{sessionId} {
+      allow read, write: if true;
+      
+      match /respondents/{respondentId} {
+        allow read, write: if true;
+      }
+    }
+    
+    // System users profiles
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+  }
+}
